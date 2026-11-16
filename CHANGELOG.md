@@ -1,5 +1,14 @@
 # 版本记录
 
+## 0.1.2
+
+- 修复 MSI 卸载逻辑：移除对 `%LOCALAPPDATA%\Programs` 的删除规则，避免误删公用目录；补充 ICE64 链接配置。
+- 修复启动器并发容错：捕获 `AbandonedMutexException`，前次崩溃遗留的锁可安全接管并继续运行。
+- 完善启动器测试模式判断：全面支持 `--verify-engine`、`--verify-new` 等测试参数透传与等待。
+- 修复 `Test-Host.ps1` 报告输出格式，消除 PowerShell 内部 Provider 属性污染。
+- 新增 `scripts/Clean.ps1` 构建缓存清理工具。
+- 规范开源许可文件，统一许可声明口径。
+
 ## 0.1.1
 
 - 整理新增源码、Visual Studio 工程、构建脚本、验证、文档与公开源码导出工具。
