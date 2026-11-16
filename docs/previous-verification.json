@@ -1,0 +1,22 @@
+{
+  "Artifact": "RpaStudioLocal-0.1",
+  "OriginalVersion": "6.0.20230616.77",
+  "ExecutableSHA256": "1957516B39BCE88AE66C5DADC6F8D0511954EA2B633749CCEC03AF6A746DEB99",
+  "BundledFiles": 506,
+  "OriginalDlls": 361,
+  "ChangedOriginalDlls": 0,
+  "CommandLibraries": 34,
+  "CommandDefinitions": 322,
+  "CommandTreeNodes": 381,
+  "LegacyActionsIncludingChildren": 63,
+  "LegacyNestedEditing": "PASS",
+  "LegacySaveReload": "PASS",
+  "NewProject": "PASS",
+  "CleanProfileComponentLoad": "PASS",
+  "CleanProfileBasicEngineRun": "PASS (start -> bundled comment -> end)",
+  "MissingDllRestoration": "PASS (1 component restored; project marker retained)",
+  "ContainsAccountDatabase": false,
+  "ContainsBusinessProjects": false,
+  "BusinessExecution": "not invoked",
+  "ExternalBrowserOfficeIntegrations": "not comprehensively tested"
+}

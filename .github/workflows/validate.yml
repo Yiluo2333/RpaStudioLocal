@@ -1,0 +1,22 @@
+name: Public source validation
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Test standalone launcher without vendor files
+        shell: pwsh
+        run: ./tests/Test-Launcher.ps1
+      - name: Export allowlisted public source
+        shell: pwsh
+        run: ./scripts/Export-Source.ps1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: github-source
+          path: artifacts/*-github-source.zip

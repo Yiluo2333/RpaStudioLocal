@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host", "src\Host\Host.csproj", "{D723F674-9F93-4D98-AC34-F01CE667179B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Launcher", "src\Launcher\Launcher.csproj", "{36B87269-7702-40D9-B11C-D3300298D4FA}"
+EndProject
+Global
+  GlobalSection(SolutionConfigurationPlatforms) = preSolution
+    Debug|x86 = Debug|x86
+    Release|x86 = Release|x86
+  EndGlobalSection
+  GlobalSection(ProjectConfigurationPlatforms) = postSolution
+    {D723F674-9F93-4D98-AC34-F01CE667179B}.Debug|x86.ActiveCfg = Debug|x86
+    {D723F674-9F93-4D98-AC34-F01CE667179B}.Debug|x86.Build.0 = Debug|x86
+    {D723F674-9F93-4D98-AC34-F01CE667179B}.Release|x86.ActiveCfg = Release|x86
+    {D723F674-9F93-4D98-AC34-F01CE667179B}.Release|x86.Build.0 = Release|x86
+    {36B87269-7702-40D9-B11C-D3300298D4FA}.Debug|x86.ActiveCfg = Debug|x86
+    {36B87269-7702-40D9-B11C-D3300298D4FA}.Debug|x86.Build.0 = Debug|x86
+    {36B87269-7702-40D9-B11C-D3300298D4FA}.Release|x86.ActiveCfg = Release|x86
+    {36B87269-7702-40D9-B11C-D3300298D4FA}.Release|x86.Build.0 = Release|x86
+  EndGlobalSection
+EndGlobal

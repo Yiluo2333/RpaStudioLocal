@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">x86</Platform>
+    <ProjectGuid>{D723F674-9F93-4D98-AC34-F01CE667179B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>RpaStudioLocal</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <VendorRoot Condition="'$(VendorRoot)' == ''">$(RPA_VENDOR_ROOT)</VendorRoot>
+    <AppConfig>$(VendorRoot)\net461\RpaStudio.exe.config</AppConfig>
+    <Optimize Condition="'$(Configuration)' == 'Release'">true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" /><Reference Include="System.Core" /><Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" /><Reference Include="PresentationCore" /><Reference Include="PresentationFramework" />
+    <Reference Include="RpaService"><HintPath>$(VendorRoot)\net461\RpaService.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="RpaModel"><HintPath>$(VendorRoot)\net461\RpaModel.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="RpaResource"><HintPath>$(VendorRoot)\net461\RpaResource.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="RpaStudioShare"><HintPath>$(VendorRoot)\net461\RpaStudioShare.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="RpaStudioUI"><HintPath>$(VendorRoot)\net461\RpaStudioUI.dll</HintPath><Private>False</Private></Reference>
+    <Reference Include="RpaUI"><HintPath>$(VendorRoot)\net461\RpaUI.dll</HintPath><Private>False</Private></Reference>
+    <Compile Include="LocalHost.cs" />
+    <Compile Include="..\Shared\AssemblyInfo.cs"><Link>Properties\AssemblyInfo.cs</Link></Compile>
+  </ItemGroup>
+  <Target Name="CheckVendor" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(VendorRoot)\net461\RpaStudioUI.dll')" Text="Set VendorRoot or RPA_VENDOR_ROOT to the supported original installation. This repository does not contain vendor binaries." />
+  </Target>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

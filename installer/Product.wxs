@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="RPA 本地版" Language="2052" Version="$(var.ProductVersion)" Manufacturer="RpaStudioLocal Project" UpgradeCode="7C56CB44-8270-43DA-B519-702F62D6472B">
+    <Package InstallerVersion="500" Compressed="yes" InstallScope="perUser" InstallPrivileges="limited" Description="原版界面的 RPA 本地工作区" />
+    <MajorUpgrade DowngradeErrorMessage="已安装更高版本的 RPA 本地版。" />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+    <Property Id="INSTALLFOLDER" Secure="yes">
+      <RegistrySearch Id="ExistingInstallDirectory" Root="HKCU" Key="Software\RpaStudioLocal\Installer" Name="InstallLocation" Type="raw" />
+    </Property>
+    <Property Id="NETFRAMEWORK48">
+      <RegistrySearch Id="NetFramework48Search" Root="HKLM" Key="SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full" Name="Release" Type="raw" Win64="no" />
+    </Property>
+    <Condition Message="请先安装 Microsoft .NET Framework 4.8，再运行本安装程序。">Installed OR NETFRAMEWORK48 &gt;= "#528040"</Condition>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="LocalAppDataFolder">
+        <Directory Id="LocalPrograms" Name="Programs">
+          <Directory Id="INSTALLFOLDER" Name="RpaStudioLocal">
+            <Component Id="Application" Guid="{C4E5B027-7670-4E43-B10E-FA8D3825F358}">
+              <File Id="LauncherExe" Source="$(var.ReleaseDir)\RpaStudioLocal.exe" />
+              <File Id="UserGuide" Source="$(var.ReleaseDir)\USER-GUIDE.md" />
+              <File Id="ThirdParty" Source="$(var.ReleaseDir)\THIRD-PARTY.md" />
+              <RegistryValue Root="HKCU" Key="Software\RpaStudioLocal\Installer" Name="Version" Value="[ProductVersion]" Type="string" KeyPath="yes" />
+              <RegistryValue Root="HKCU" Key="Software\RpaStudioLocal\Installer" Name="InstallLocation" Value="[INSTALLFOLDER]" Type="string" />
+              <RemoveFolder Id="RemoveInstallFolder" On="uninstall" />
+              <RemoveFolder Id="RemoveLocalPrograms" Directory="LocalPrograms" On="uninstall" />
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationMenu" Name="RPA 本地版">
+          <Component Id="MenuShortcut" Guid="{89B61101-D212-4BD8-81E3-52F5E668D79C}">
+            <Shortcut Id="MenuLaunch" Name="RPA 本地版" Target="[INSTALLFOLDER]RpaStudioLocal.exe" WorkingDirectory="INSTALLFOLDER" />
+            <RemoveFolder Id="RemoveMenuFolder" On="uninstall" />
+            <RegistryValue Root="HKCU" Key="Software\RpaStudioLocal\Installer" Name="MenuShortcut" Value="1" Type="integer" KeyPath="yes" />
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="DesktopFolder">
+        <Component Id="DesktopShortcut" Guid="{D2B27739-C9BB-4AC7-B9CC-40490FA8F978}">
+          <Shortcut Id="DesktopLaunch" Name="RPA 本地版" Target="[INSTALLFOLDER]RpaStudioLocal.exe" WorkingDirectory="INSTALLFOLDER" />
+          <RegistryValue Root="HKCU" Key="Software\RpaStudioLocal\Installer" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes" />
+        </Component>
+      </Directory>
+    </Directory>
+    <Feature Id="MainFeature" Title="RPA 本地版" Level="1">
+      <ComponentRef Id="Application" />
+      <ComponentRef Id="MenuShortcut" />
+      <ComponentRef Id="DesktopShortcut" />
+    </Feature>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <SetProperty Id="ARPINSTALLLOCATION" Value="[INSTALLFOLDER]" After="CostFinalize" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.LicenseRtf)" />
+    <UIRef Id="WixUI_InstallDir" />
+  </Product>
+</Wix>
