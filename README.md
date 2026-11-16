@@ -34,15 +34,6 @@
 
 `RpaStudioLocal.sln` 可在安装 .NET Framework 4.8 Developer Pack 的 Visual Studio 中打开。Host 需设置 `VendorRoot`，Launcher 需设置 `PayloadZip`；一键脚本无需 Visual Studio，也不需要 NuGet 还原。
 
-## 发布 GitHub
-
-```powershell
-.\scripts\Export-Source.ps1
-```
-
-该脚本仅导出明确列出的源码、工程、文档及工作流，检查其中没有二进制、账号库或业务项目。可把 `artifacts\RpaStudioLocal-<版本>-github-source.zip` 解压后上传至新仓库。参见 [发布说明](docs/RELEASE.md)。完整运行包依赖原厂组件；公开源码包不包含这些组件。
-
-尚未选定新增代码的开源许可，参见 [LICENSE.md](LICENSE.md)。公开仓库不授予原厂组件的再分发许可，参见 [THIRD-PARTY.md](THIRD-PARTY.md)。
 
 ## 验证与限制
 
