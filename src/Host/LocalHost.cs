@@ -158,6 +158,12 @@ internal static class LocalHost {
         var notify=typeof(RpaUI.ObserveObject).GetMethod("OnPropertyChanged",All,null,new[]{typeof(string)},null);
         if(notify!=null)notify.Invoke(vm,new object[]{name});
     }
+    static void ApplyIcon(Window w) {
+        try {
+            string ico=Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"ico","TaskBar.ico");
+            if(File.Exists(ico))w.Icon=System.Windows.Media.Imaging.BitmapFrame.Create(new Uri(ico,UriKind.Absolute));
+        }catch{}
+    }
     static void LoadProject(object homeVm,string path) {
         homeVm.GetType().GetMethod("LoadProject",All).Invoke(homeVm,new object[]{Path.GetFullPath(path),Path.GetDirectoryName(Path.GetDirectoryName(Path.GetFullPath(path)))});
         Log("Project loaded with original parser.");
@@ -169,6 +175,7 @@ internal static class LocalHost {
             InitializeLocal();
             var app=CreateApp();
             var home=new RpaStudioUI.View.RpaStudioWinHomeView();
+            ApplyIcon(home);
             Log("Original home constructed.");
             bool verify=args.Contains("--verify");
             string project=args.FirstOrDefault(a=>a.EndsWith(".proj",StringComparison.OrdinalIgnoreCase));
@@ -196,7 +203,7 @@ internal static class LocalHost {
             var manager=RpaStudioUI.RpaWindowManager.GetInstance();
             manager.Register<RpaStudioUI.View.RpaStudioWinHomeView>(home);
             Window window=home;
-            if(project!=null) {LoadProject(home.DataContext,project);window=new RpaStudioUI.RpaStudioWinMainView();manager.Register<RpaStudioUI.RpaStudioWinMainView>(window);}
+            if(project!=null) {LoadProject(home.DataContext,project);window=new RpaStudioUI.RpaStudioWinMainView();ApplyIcon(window);manager.Register<RpaStudioUI.RpaStudioWinMainView>(window);}
             manager.CurrentWindow=window;
 #if VALIDATION
             if(args.Contains("--verify-editor")) LocalVerification.Attach(app,window,root,project);

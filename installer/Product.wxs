@@ -29,7 +29,7 @@
       <Directory Id="ProgramMenuFolder">
         <Directory Id="ApplicationMenu" Name="RPA 本地版">
           <Component Id="MenuShortcut" Guid="{89B61101-D212-4BD8-81E3-52F5E668D79C}">
-            <Shortcut Id="MenuLaunch" Name="RPA 本地版" Target="[INSTALLFOLDER]RpaStudioLocal.exe" WorkingDirectory="INSTALLFOLDER" />
+            <Shortcut Id="MenuLaunch" Name="RPA 本地版" Target="[INSTALLFOLDER]RpaStudioLocal.exe" WorkingDirectory="INSTALLFOLDER" Icon="AppIcon.ico" />
             <RemoveFolder Id="RemoveMenuFolder" On="uninstall" />
             <RegistryValue Root="HKCU" Key="Software\RpaStudioLocal\Installer" Name="MenuShortcut" Value="1" Type="integer" KeyPath="yes" />
           </Component>
@@ -37,11 +37,13 @@
       </Directory>
       <Directory Id="DesktopFolder">
         <Component Id="DesktopShortcut" Guid="{D2B27739-C9BB-4AC7-B9CC-40490FA8F978}">
-          <Shortcut Id="DesktopLaunch" Name="RPA 本地版" Target="[INSTALLFOLDER]RpaStudioLocal.exe" WorkingDirectory="INSTALLFOLDER" />
+          <Shortcut Id="DesktopLaunch" Name="RPA 本地版" Target="[INSTALLFOLDER]RpaStudioLocal.exe" WorkingDirectory="INSTALLFOLDER" Icon="AppIcon.ico" />
           <RegistryValue Root="HKCU" Key="Software\RpaStudioLocal\Installer" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes" />
         </Component>
       </Directory>
     </Directory>
+    <Icon Id="AppIcon.ico" SourceFile="$(var.ReleaseDir)\app.ico" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon.ico" />
     <Feature Id="MainFeature" Title="RPA 本地版" Level="1">
       <ComponentRef Id="Application" />
       <ComponentRef Id="MenuShortcut" />

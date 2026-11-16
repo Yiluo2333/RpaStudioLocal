@@ -8,7 +8,7 @@ $version = (Get-Content -LiteralPath (Join-Path $repo 'VERSION') -Raw).Trim()
 $stage = Join-Path $repo ('build\public-source-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Force -Path $stage | Out-Null
 $roots = @('.github','src','scripts','tests','installer','docs')
-$extensions = @('.cs','.csproj','.ps1','.md','.json','.yml','.wxs','.rtf')
+$extensions = @('.cs','.csproj','.ps1','.md','.json','.yml','.wxs','.rtf','.ico')
 foreach ($root in $roots) {
     Get-ChildItem -LiteralPath (Join-Path $repo $root) -Recurse -File | Where-Object {
         $_.FullName -notmatch '\\(bin|obj)\\' -and $_.Extension -in $extensions

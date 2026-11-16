@@ -41,7 +41,9 @@ $manifest = $staticFiles | ForEach-Object {
 $zip = Join-Path $build 'runtime.zip'
 New-PortableZip $payload $zip
 $exe = Join-Path $release 'RpaStudioLocal.exe'
-Invoke-Csc @('/nologo','/target:winexe','/platform:x86','/optimize+','/reference:System.Core.dll','/reference:System.Windows.Forms.dll','/reference:System.IO.Compression.dll',('/resource:' + $zip + ',runtime.zip'),('/out:' + $exe),(Join-Path $PSScriptRoot 'src\Launcher\BundleLauncher.cs'),(Join-Path $PSScriptRoot 'src\Shared\AssemblyInfo.cs'))
+$icon = Join-Path $PSScriptRoot 'src\Shared\app.ico'
+$iconArg = if (Test-Path -LiteralPath $icon) { @('/win32icon:' + $icon) } else { @() }
+Invoke-Csc (@('/nologo','/target:winexe','/platform:x86','/optimize+','/reference:System.Core.dll','/reference:System.Windows.Forms.dll','/reference:System.IO.Compression.dll',('/resource:' + $zip + ',runtime.zip'),('/out:' + $exe)) + $iconArg + @((Join-Path $PSScriptRoot 'src\Launcher\BundleLauncher.cs'),(Join-Path $PSScriptRoot 'src\Shared\AssemblyInfo.cs')))
 # Every distributed vendor DLL must match its source; also require all command DLLs.
 $dlls = @(Get-ChildItem -LiteralPath $payload -Recurse -File -Filter '*.dll')
 foreach ($file in $dlls) {
@@ -69,6 +71,7 @@ Write-Utf8 (Join-Path $release 'build-report.json') ($report | ConvertTo-Json -D
 Copy-Item -LiteralPath (Join-Path $payload 'bundle.sha256') -Destination (Join-Path $release 'components.sha256') -Force
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'docs\USER-GUIDE.md') -Destination (Join-Path $release 'USER-GUIDE.md') -Force
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'THIRD-PARTY.md') -Destination (Join-Path $release 'THIRD-PARTY.md') -Force
+if (Test-Path -LiteralPath $icon) { Copy-Item -LiteralPath $icon -Destination (Join-Path $release 'app.ico') -Force }
 Write-Utf8 (Join-Path $release 'build-location.txt') $build
 if ($Msi) { & (Join-Path $PSScriptRoot 'scripts\Build-Msi.ps1') -WixDirectory $WixDirectory }
 Write-Output "Built $exe ($($report.ExecutableBytes) bytes); private staging: $build"

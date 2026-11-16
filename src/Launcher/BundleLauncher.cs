@@ -42,6 +42,7 @@ internal static class BundleLauncher {
             ProgressBar progress=null;Label status=null;
             if(!verify) {
                 splash=new Form {Text="RPA 本地版",Width=440,Height=140,StartPosition=FormStartPosition.CenterScreen,FormBorderStyle=FormBorderStyle.FixedDialog,ControlBox=false};
+                try{splash.Icon=System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);}catch{}
                 status=new Label {Text="正在准备本地组件，首次启动可能需要片刻…",Left=20,Top=20,Width=390,Height=25};
                 progress=new ProgressBar {Left=20,Top=55,Width=390,Height=20,Maximum=1};
                 splash.Controls.Add(status);splash.Controls.Add(progress);splash.Show();Application.DoEvents();

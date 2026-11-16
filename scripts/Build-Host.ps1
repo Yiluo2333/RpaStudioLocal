@@ -17,5 +17,7 @@ if ($Validation) {
     $refs += @('RpaUtil','Newtonsoft.Json') | ForEach-Object { '/reference:' + (Join-Path $bin ($_ + '.dll')) }
     $options += '/define:VALIDATION'
 }
-Invoke-Csc (@('/nologo','/target:winexe','/platform:x86','/optimize+','/reference:System.Core.dll','/reference:System.Xaml.dll',('/out:' + (Join-Path $bin $name))) + $refs + $options + $sources)
+$icon = Join-Path $repo 'src\Shared\app.ico'
+$iconArg = if (Test-Path -LiteralPath $icon) { @('/win32icon:' + $icon) } else { @() }
+Invoke-Csc (@('/nologo','/target:winexe','/platform:x86','/optimize+','/reference:System.Core.dll','/reference:System.Xaml.dll',('/out:' + (Join-Path $bin $name))) + $iconArg + $refs + $options + $sources)
 Copy-Item -LiteralPath (Join-Path $bin 'RpaStudio.exe.config') -Destination (Join-Path $bin ($name + '.config')) -Force

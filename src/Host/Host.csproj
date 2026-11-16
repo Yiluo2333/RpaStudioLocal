@@ -11,6 +11,7 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <VendorRoot Condition="'$(VendorRoot)' == ''">$(RPA_VENDOR_ROOT)</VendorRoot>
     <AppConfig>$(VendorRoot)\net461\RpaStudio.exe.config</AppConfig>
+    <ApplicationIcon>..\Shared\app.ico</ApplicationIcon>
     <Optimize Condition="'$(Configuration)' == 'Release'">true</Optimize>
   </PropertyGroup>
   <ItemGroup>
