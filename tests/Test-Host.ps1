@@ -25,7 +25,7 @@ foreach ($mode in @('--verify','--verify-new','--verify-engine')) {
     if ($process.ExitCode -ne 0) { throw "Host test failed: $mode. See $runtime\LocalConfig\host.log" }
 }
 $result = [ordered]@{
-    ComponentLoad=(Get-Content -LiteralPath (Join-Path $runtime 'LocalConfig\verify.ok') -Raw)
+    ComponentLoad=(Get-Content -LiteralPath (Join-Path $runtime 'LocalConfig\verify.ok') -Raw).Trim()
     NewProject=(Get-Content -LiteralPath (Join-Path $runtime 'LocalConfig\new-project-verification.txt') -Raw).Trim()
     BasicEngine=(Get-Content -LiteralPath (Join-Path $runtime 'LocalConfig\engine-verification.txt') -Raw).Trim()
     BusinessProjectExecuted=$false

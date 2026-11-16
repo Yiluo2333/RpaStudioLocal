@@ -29,16 +29,17 @@ internal static class BundleLauncher {
         b.Append('\\',slashes*2);return b.Append('"').ToString();
     }
     [STAThread] public static int Main(string[] args) {
-        bool verify=args.Contains("--verify");
+        bool verify=args.Any(a=>a.StartsWith("--verify",StringComparison.OrdinalIgnoreCase));
         string baseDir=Environment.GetEnvironmentVariable("RPA_LOCAL_RUNTIME");
         if(String.IsNullOrEmpty(baseDir))baseDir=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"RpaStudioLocal");
+        Form splash=null;
         try {
             baseDir=Path.GetFullPath(baseDir);Directory.CreateDirectory(baseDir);
             string id;
             using(var payload=Assembly.GetExecutingAssembly().GetManifestResourceStream("runtime.zip"))id=Hash(payload);
             string root=Path.Combine(baseDir,"Versions",id.Substring(0,16));
             int restored=0,total=0;
-            Form splash=null;ProgressBar progress=null;Label status=null;
+            ProgressBar progress=null;Label status=null;
             if(!verify) {
                 splash=new Form {Text="RPA 本地版",Width=440,Height=140,StartPosition=FormStartPosition.CenterScreen,FormBorderStyle=FormBorderStyle.FixedDialog,ControlBox=false};
                 status=new Label {Text="正在准备本地组件，首次启动可能需要片刻…",Left=20,Top=20,Width=390,Height=25};
@@ -46,7 +47,10 @@ internal static class BundleLauncher {
                 splash.Controls.Add(status);splash.Controls.Add(progress);splash.Show();Application.DoEvents();
             }
             using(var gate=new Mutex(false,"Local\\RpaStudioLocal-Install-"+id.Substring(0,16))) {
-                if(!gate.WaitOne(TimeSpan.FromSeconds(30)))throw new IOException("另一个窗口正在准备运行组件，请稍后重试。");
+                bool acquired=false;
+                try {acquired=gate.WaitOne(TimeSpan.FromSeconds(30));}
+                catch(AbandonedMutexException) {acquired=true;}
+                if(!acquired)throw new IOException("另一个窗口正在准备运行组件，请稍后重试。");
                 try {
                     Directory.CreateDirectory(root);
                     using(var payload=Assembly.GetExecutingAssembly().GetManifestResourceStream("runtime.zip"))
@@ -88,6 +92,7 @@ internal static class BundleLauncher {
                 return process.ExitCode;
             }
         } catch(Exception e) {
+            if(splash!=null)try{splash.Dispose();}catch{}
             try {Directory.CreateDirectory(baseDir);File.WriteAllText(Path.Combine(baseDir,"launcher-error.txt"),e.ToString());}catch{}
             if(!verify)MessageBox.Show("组件准备失败："+e.Message+"\n请关闭本地版后重试。","RPA 本地版",MessageBoxButtons.OK,MessageBoxIcon.Error);
             return 1;

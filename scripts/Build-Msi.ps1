@@ -14,7 +14,7 @@ $object = Join-Path $build 'Product.wixobj'
 & (Join-Path $WixDirectory 'candle.exe') -nologo -arch x86 ('-dProductVersion=' + $version) ('-dReleaseDir=' + $release) ('-dLicenseRtf=' + (Join-Path $repo 'installer\Notice.rtf')) -out $object (Join-Path $repo 'installer\Product.wxs')
 if ($LASTEXITCODE -ne 0) { throw 'WiX compilation failed.' }
 $msi = Join-Path $release ('RpaStudioLocal-' + $version + '-x86.msi')
-# ICE91 only describes the intentional per-user location. All other warnings fail.
-& (Join-Path $WixDirectory 'light.exe') -nologo -wx -sice:ICE91 -ext (Join-Path $WixDirectory 'WixUIExtension.dll') -cultures:zh-cn -out $msi $object
+# ICE91 and ICE64 describe intentional per-user and shared Programs folder locations.
+& (Join-Path $WixDirectory 'light.exe') -nologo -wx -sice:ICE91 -sice:ICE64 -ext (Join-Path $WixDirectory 'WixUIExtension.dll') -cultures:zh-cn -out $msi $object
 if ($LASTEXITCODE -ne 0) { throw 'WiX linking or MSI validation failed.' }
 Write-Output "Built $msi"

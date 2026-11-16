@@ -22,7 +22,6 @@
               <RegistryValue Root="HKCU" Key="Software\RpaStudioLocal\Installer" Name="Version" Value="[ProductVersion]" Type="string" KeyPath="yes" />
               <RegistryValue Root="HKCU" Key="Software\RpaStudioLocal\Installer" Name="InstallLocation" Value="[INSTALLFOLDER]" Type="string" />
               <RemoveFolder Id="RemoveInstallFolder" On="uninstall" />
-              <RemoveFolder Id="RemoveLocalPrograms" Directory="LocalPrograms" On="uninstall" />
             </Component>
           </Directory>
         </Directory>
